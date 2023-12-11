@@ -273,6 +273,15 @@
         NMSSHLogWarn(@"contentsAtPath:progress: failed to get file attributes");
         return NO;
     }
+
+    if ([file isSymbolicLink]) {
+        NSString *linkPath = [self resolveSymbolicLinkAtPath:path];
+        if (!linkPath) {
+            NMSSHLogWarn(@"contentsAtPath:progress: failed to resolve symbolic link");
+            return NO;
+        }
+        return [self readContentsAtPath:linkPath toStream:outputStream progress:progress];
+    }
     
     if ([outputStream streamStatus] == NSStreamStatusNotOpen) {
         [outputStream open];

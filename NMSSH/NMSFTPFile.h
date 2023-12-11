@@ -15,6 +15,9 @@
 /** Property that declares whether the file is a directory or a regular file */
 @property (nonatomic, readonly) BOOL isDirectory;
 
+/** Property that declares whether the file is a symbolic link */
+@property (nonatomic, readonly) BOOL isSymbolicLink;
+
 /** Returns the last modification date of the file */
 @property (nonatomic, nullable, readonly) NSDate *modificationDate;
 

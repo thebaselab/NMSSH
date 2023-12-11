@@ -4,6 +4,7 @@
 @interface NMSFTPFile ()
 @property (nonatomic, strong) NSString *filename;
 @property (nonatomic, readwrite) BOOL isDirectory;
+@property (nonatomic, readwrite) BOOL isSymbolicLink;
 @property (nonatomic, strong) NSDate *modificationDate;
 @property (nonatomic, strong) NSDate *lastAccess;
 @property (nonatomic, strong) NSNumber *fileSize;
@@ -35,6 +36,7 @@
     [self setOwnerGroupID:fileAttributes.gid];
     [self setPermissions:[self convertPermissionToSymbolicNotation:fileAttributes.permissions]];
     [self setIsDirectory:LIBSSH2_SFTP_S_ISDIR(fileAttributes.permissions)];
+    [self setIsSymbolicLink:LIBSSH2_SFTP_S_ISLNK(fileAttributes.permissions)];
     [self setFlags:fileAttributes.flags];
 }
 
@@ -164,6 +166,7 @@
         object.fileSize = [self.fileSize copyWithZone:zone];
         object.permissions = [self.permissions copyWithZone:zone];
         object.isDirectory = self.isDirectory;
+        object.isSymbolicLink = self.isSymbolicLink;
         object.ownerUserID = self.ownerUserID;
         object.ownerGroupID = self.ownerGroupID;
         object.flags = self.flags;
